@@ -21,7 +21,7 @@ Speed is exactly the **same** of the original `pgsql` binary thanks to streams u
 
 | Input type                                             | Example                                     |     Supported?     |
 |--------------------------------------------------------|---------------------------------------------|:------------------:|
-| `pg_dump` output (with \`COPY\` commands)              | *as is*                                     |        :x:         |
+| `pg_dump` output (with `COPY` commands)                | *as is*                                     |        :x:         |
 | `pg_dump --inserts` output                             | *as is*                                     | :heavy_check_mark: |
 | Single query on single line                            | `SELECT NOW();`                             | :heavy_check_mark: |
 | Single query on multiple lines                         | `SELECT`<br />`NOW();`                      | :heavy_check_mark: |
