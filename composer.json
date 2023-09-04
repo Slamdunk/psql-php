@@ -1,9 +1,10 @@
 {
-    "name": "slam/postgres-php",
-    "description": "PHP version of postgres cli that comes with PostgreSQL",
+    "name": "slam/psql-php",
+    "description": "PHP version of psql cli that comes with PostgreSQL",
     "license": "MIT",
     "keywords": [
-        "postgres"
+        "postgres",
+        "psql"
     ],
     "authors": [
         {
@@ -33,6 +34,6 @@
         }
     },
     "bin": [
-        "postgres"
+        "psql"
     ]
 }

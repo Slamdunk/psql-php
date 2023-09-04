@@ -13,7 +13,7 @@
          cacheDirectory=".phpunit.cache"
 >
   <testsuites>
-    <testsuite name="Slamdunk/postgres-php">
+    <testsuite name="Slamdunk/psql-php">
       <directory>./tests/</directory>
     </testsuite>
   </testsuites>

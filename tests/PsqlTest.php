@@ -14,11 +14,11 @@ use SlamPgsql\Psql;
 #[CoversClass(Psql::class)]
 final class PsqlTest extends TestCase
 {
-    private Psql $postgres;
+    private Psql $psql;
 
     protected function setUp(): void
     {
-        $this->postgres = new Psql(
+        $this->psql = new Psql(
             '127.0.0.1',
             5432,
             'postgres',
@@ -50,13 +50,13 @@ final class PsqlTest extends TestCase
         $databaseName = uniqid('db_');
 
         [$inputFile, $outputFile, $errorFile] = $this->createStreams(sprintf('CREATE DATABASE %s', $databaseName));
-        self::assertTrue($this->postgres->run($inputFile, $outputFile, $errorFile));
+        self::assertTrue($this->psql->run($inputFile, $outputFile, $errorFile));
 
         rewind($outputFile);
         self::assertEmpty(stream_get_contents($outputFile));
 
         [$inputFile, $outputFile, $errorFile] = $this->createStreams('SELECT datname FROM pg_database');
-        self::assertTrue($this->postgres->run($inputFile, $outputFile, $errorFile));
+        self::assertTrue($this->psql->run($inputFile, $outputFile, $errorFile));
 
         rewind($outputFile);
         self::assertStringContainsString($databaseName, (string) stream_get_contents($outputFile));
@@ -68,7 +68,7 @@ final class PsqlTest extends TestCase
             'SELECT 1;',
             'SELECT 2;',
         ]));
-        self::assertTrue($this->postgres->run($inputFile, $outputFile, $errorFile));
+        self::assertTrue($this->psql->run($inputFile, $outputFile, $errorFile));
     }
 
     public function testSkipCommentLines(): void
@@ -78,7 +78,7 @@ final class PsqlTest extends TestCase
             '-- foo '.uniqid(),
             'SELECT 2;',
         ]));
-        self::assertTrue($this->postgres->run($inputFile, $outputFile, $errorFile));
+        self::assertTrue($this->psql->run($inputFile, $outputFile, $errorFile));
     }
 
     public function testReportSpecificQueryOnError(): void
@@ -88,7 +88,7 @@ final class PsqlTest extends TestCase
             'SELECT 1;',
             $wrongQuery.';',
         ]));
-        self::assertFalse($this->postgres->run($inputFile, $outputFile, $errorFile));
+        self::assertFalse($this->psql->run($inputFile, $outputFile, $errorFile));
 
         rewind($errorFile);
         $output = (string) stream_get_contents($errorFile);
@@ -103,7 +103,7 @@ final class PsqlTest extends TestCase
             'SELECT 1;',
             $wrongQuery,
         ]));
-        self::assertFalse($this->postgres->run($inputFile, $outputFile, $errorFile));
+        self::assertFalse($this->psql->run($inputFile, $outputFile, $errorFile));
 
         rewind($errorFile);
         $output = (string) stream_get_contents($errorFile);

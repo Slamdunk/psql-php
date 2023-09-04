@@ -51,7 +51,7 @@ $ ./psql --database foobar < foobar_huge_dump.sql
 ### From PHP
 
 ```php
-$psql = new \SlamPgsql\Psql('localhost', 5432, 'postgres', 'my_password', 'my_database');
+$psql = new \SlamPgsql\Psql('localhost', 5432, 'my_username', 'my_password', 'my_database');
 $return = $psql->run(\STDIN, \STDOUT, \STDERR);
 exit((int) (true !== $return));
 ```
