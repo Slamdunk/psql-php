@@ -25,12 +25,12 @@
     },
     "autoload": {
         "psr-4": {
-            "SlamPgsql\\": "src/"
+            "SlamPsql\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "SlamPgsql\\Tests\\": "tests/"
+            "SlamPsql\\Tests\\": "tests/"
         }
     },
     "bin": [

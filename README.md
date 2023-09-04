@@ -1,21 +1,21 @@
-# PgSQL bin in PHP
+# \`psql\` in PHP
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/slam/psql-php.svg)](https://packagist.org/packages/slam/psql-php)
 [![Downloads](https://img.shields.io/packagist/dt/slam/psql-php.svg)](https://packagist.org/packages/slam/psql-php)
 [![Integrate](https://github.com/Slamdunk/psql-php/workflows/CI/badge.svg?branch=master)](https://github.com/Slamdunk/psql-php/actions)
 [![Code Coverage](https://codecov.io/gh/Slamdunk/psql-php/coverage.svg?branch=master)](https://codecov.io/gh/Slamdunk/psql-php?branch=master)
 
-PHP light version of pgsql cli that comes with PostgreSQL.
+PHP light version of \`psql\` that comes with PostgreSQL.
 
 ## Why
 
 1. You are inside a PHP only environment, like a PHP Docker image
-1. You need to import a large pgsql dump
-1. You don't have access to the native `pgsql` client
+1. You need to import a large `pg_dump --inserts` dump
+1. You don't have access to the native `psql` client
 
 ## Performance
 
-Speed is exactly the **same** of the original `pgsql` binary thanks to streams usage.
+Speed is exactly the **same** of the original `psql` binary thanks to streams usage.
 
 ## Supported formats
 
@@ -32,7 +32,7 @@ When using `pg_dump --inserts` it is highly recommended to also set `--rows-per-
 
 ## Usage
 
-The library provides two usages, the binary and the `\SlamPgsql\Psql` class.
+The library provides two usages, the binary and the `\SlamPsql\Psql` class.
 
 ### From CLI
 
@@ -54,9 +54,9 @@ $ ./psql --database foobar < foobar_huge_dump.sql
 ### From PHP
 
 ```php
-$psql = new \SlamPgsql\Psql('localhost', 5432, 'my_username', 'my_password', 'my_database');
+$psql = new \SlamPsql\Psql('localhost', 5432, 'my_username', 'my_password', 'my_database');
 $return = $psql->run(\STDIN, \STDOUT, \STDERR);
 exit((int) (true !== $return));
 ```
 
-`\SlamPgsql\Psql::run` accepts any type of resource consumable by `fgets/fwrite` functions.
+`\SlamPsql\Psql::run` accepts any type of resource consumable by `fgets/fwrite` functions.

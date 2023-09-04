@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SlamPgsql;
+namespace SlamPsql;
 
 use PgSql\Connection;
 
