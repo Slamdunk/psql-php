@@ -1,0 +1,38 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__.'/src/PsqlInterface.php';
+
+require __DIR__.'/src/Psql.php';
+
+$opts = getopt('h', [
+    'host:',
+    'port:',
+    'username:',
+    'password:',
+    'database:',
+]);
+if (array_key_exists('h', $opts)) {
+    fwrite(\STDOUT, implode(\PHP_EOL, [
+        'Usage: psql [OPTIONS]',
+        '  --host       Connect to host',
+        '  --port       Port number',
+        '  --username   User for login',
+        '  --password   Password to use',
+        '  --database   Database to use',
+        '',
+    ]));
+
+    exit;
+}
+
+$psql = new \SlamPgsql\Psql(
+    $opts['host'],
+    (int) $opts['port'],
+    $opts['username'],
+    $opts['password'],
+    $opts['database'],
+);
+$return = $psql->run(\STDIN, \STDOUT, \STDERR);
+
+exit((int) (true !== $return));
