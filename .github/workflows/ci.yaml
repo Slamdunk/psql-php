@@ -63,14 +63,6 @@ jobs:
           ini-values: "${{ env.INI_VALUES }}"
       - uses: "ramsey/composer-install@v2"
 
-      - name: "Wait for PostgreSQL to be ready"
-        run: |
-          until PGPASSWORD=root_password psql --host=127.0.0.1 --port=3306 --username=postgres &> /dev/null
-          do
-            printf "."
-            sleep 1
-          done
-
       - run: "vendor/bin/phpunit --no-coverage --no-logging"
         if: ${{ matrix.code-coverage == 'none' }}
         timeout-minutes: 1
