@@ -31,7 +31,7 @@ $psql = new \SlamPgsql\Psql(
     (int) $opts['port'],
     $opts['username'],
     $opts['password'],
-    $opts['database'],
+    $opts['database'] ?? null,
 );
 $return = $psql->run(\STDIN, \STDOUT, \STDERR);
 
