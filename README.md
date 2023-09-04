@@ -1,11 +1,11 @@
-# \`psql\` in PHP
+# `psql` in PHP
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/slam/psql-php.svg)](https://packagist.org/packages/slam/psql-php)
 [![Downloads](https://img.shields.io/packagist/dt/slam/psql-php.svg)](https://packagist.org/packages/slam/psql-php)
 [![Integrate](https://github.com/Slamdunk/psql-php/workflows/CI/badge.svg?branch=master)](https://github.com/Slamdunk/psql-php/actions)
 [![Code Coverage](https://codecov.io/gh/Slamdunk/psql-php/coverage.svg?branch=master)](https://codecov.io/gh/Slamdunk/psql-php?branch=master)
 
-PHP light version of \`psql\` that comes with PostgreSQL.
+PHP light version of `psql` that comes with PostgreSQL.
 
 ## Why
 
