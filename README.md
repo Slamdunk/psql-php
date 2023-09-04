@@ -19,13 +19,16 @@ Speed is exactly the **same** of the original `pgsql` binary thanks to streams u
 
 ## Supported formats
 
-|Input type|Example|Supported?|
-|---|---|:---:|
-|`pg_dump` output|*as is*|:heavy_check_mark:|
-|Single query on single line|`SELECT NOW();`|:heavy_check_mark:|
-|Single query on multiple lines|`SELECT`<br />`NOW();`|:heavy_check_mark:|
-|Multiple queries on separated single or multiple lines|`SELECT NOW();`<br />`SELECT`<br />`NOW();`|:heavy_check_mark:|
-|Multiple queries on single line|`SELECT NOW();SELECT NOW();`|:x:|
+| Input type                                             | Example                                     |     Supported?     |
+|--------------------------------------------------------|---------------------------------------------|:------------------:|
+| `pg_dump` output (with \`COPY\` commands)              | *as is*                                     |        :x:         |
+| `pg_dump --inserts` output                             | *as is*                                     | :heavy_check_mark: |
+| Single query on single line                            | `SELECT NOW();`                             | :heavy_check_mark: |
+| Single query on multiple lines                         | `SELECT`<br />`NOW();`                      | :heavy_check_mark: |
+| Multiple queries on separated single or multiple lines | `SELECT NOW();`<br />`SELECT`<br />`NOW();` | :heavy_check_mark: |
+| Multiple queries on single line                        | `SELECT NOW();SELECT NOW();`                |        :x:         |
+
+When using `pg_dump --inserts` it is highly recommended to also set `--rows-per-insert=1000` to speed performances up.
 
 ## Usage
 
