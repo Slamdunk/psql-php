@@ -14,6 +14,7 @@ final class Psql implements PsqlInterface
         private readonly string $username,
         private readonly string $password,
         private readonly ?string $database,
+        private readonly ?int $connectTimeout,
     ) {}
 
     /**
@@ -51,6 +52,9 @@ final class Psql implements PsqlInterface
         );
         if (null !== $this->database) {
             $pgConnectionParams .= ' dbname='.$this->database;
+        }
+        if (null !== $this->connectTimeout) {
+            $pgConnectionParams .= sprintf(' connect_timeout=%s', $this->connectTimeout);
         }
 
         set_error_handler(static function ($severity, $message, $file, $line): void {
