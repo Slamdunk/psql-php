@@ -24,6 +24,7 @@ final class PsqlTest extends TestCase
             'postgres',
             'root_password',
             'postgres',
+            5,
         );
     }
 
@@ -35,6 +36,7 @@ final class PsqlTest extends TestCase
             5432,
             $user,
             uniqid(),
+            null,
             null,
         );
 

@@ -11,15 +11,17 @@ $opts = getopt('h', [
     'username:',
     'password:',
     'database:',
+    'connect_timeout:',
 ]);
 if (array_key_exists('h', $opts)) {
     fwrite(\STDOUT, implode(\PHP_EOL, [
         'Usage: psql [OPTIONS]',
-        '  --host       Connect to host',
-        '  --port       Port number',
-        '  --username   User for login',
-        '  --password   Password to use',
-        '  --database   Database to use',
+        '  --host              Connect to host',
+        '  --port              Port number',
+        '  --username          User for login',
+        '  --password          Password to use',
+        '  --database          Database to use',
+        '  --connect_timeout   Connect timeout to use',
         '',
     ]));
 
@@ -32,6 +34,7 @@ $psql = new \SlamPsql\Psql(
     $opts['username'],
     $opts['password'],
     $opts['database'] ?? null,
+    $opts['connect_timeout'] ?? null,
 );
 $return = $psql->run(\STDIN, \STDOUT, \STDERR);
 
