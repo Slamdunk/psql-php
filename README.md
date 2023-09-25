@@ -39,11 +39,12 @@ The library provides two usages, the binary and the `\SlamPsql\Psql` class.
 ```
 $ ./psql -h
 Usage: psql [OPTIONS]
-  --host       Connect to host
-  --port       Port number
-  --username   User for login
-  --password   Password to use
-  --database   Database to use
+  --host              Connect to host
+  --port              Port number
+  --username          User for login
+  --password          Password to use
+  --database          Database to use
+  --connect_timeout   Connect timeout to use
 
 $ printf "CREATE DATABASE foobar;\nSELECT datname FROM pg_database;" | ./psql
 foobar
@@ -57,6 +58,12 @@ $ ./psql --database foobar < foobar_huge_dump.sql
 $psql = new \SlamPsql\Psql('localhost', 5432, 'my_username', 'my_password', 'my_database');
 $return = $psql->run(\STDIN, \STDOUT, \STDERR);
 exit((int) (true !== $return));
+
+// With the connect_timeout argument
+$psql = new \SlamPsql\Psql('localhost', 5432, 'my_username', 'my_password', 'my_database', 5);
+$return = $psql->run(\STDIN, \STDOUT, \STDERR);
+exit((int) (true !== $return));
+
 ```
 
 `\SlamPsql\Psql::run` accepts any type of resource consumable by `fgets/fwrite` functions.
