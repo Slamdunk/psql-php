@@ -43,7 +43,7 @@ final class Psql implements PsqlInterface
             // @codeCoverageIgnoreEnd
         }
 
-        $pgConnectionParams = sprintf(
+        $pgConnectionParams = \sprintf(
             'host=%s port=%s user=%s password=%s',
             $this->host,
             $this->port,
@@ -54,7 +54,7 @@ final class Psql implements PsqlInterface
             $pgConnectionParams .= ' dbname='.$this->database;
         }
         if (null !== $this->connectTimeout) {
-            $pgConnectionParams .= sprintf(' connect_timeout=%s', $this->connectTimeout);
+            $pgConnectionParams .= \sprintf(' connect_timeout=%s', $this->connectTimeout);
         }
 
         set_error_handler(static function ($severity, $message, $file, $line): void {
@@ -118,7 +118,7 @@ final class Psql implements PsqlInterface
         }
 
         while ($row = pg_fetch_row($pgResult)) {
-            fwrite($outputStream, sprintf("%s\n", implode("\t", $row)));
+            fwrite($outputStream, \sprintf("%s\n", implode("\t", $row)));
         }
         pg_free_result($pgResult);
 

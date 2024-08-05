@@ -1,31 +1,37 @@
-CSFIX_PHP_BIN=PHP_CS_FIXER_IGNORE_ENV=1 php8.2
-PHP_BIN=php8.2 -d zend.assertions=1 -d error_reporting=-1
-COMPOSER_BIN=$(shell command -v composer)
+DOCKER_PHP_EXEC := docker compose run --rm php
 
 all: csfix static-analysis test
 	@echo "Done."
 
-vendor: composer.json
-	$(PHP_BIN) $(COMPOSER_BIN) update
-	$(PHP_BIN) $(COMPOSER_BIN) bump
-	touch vendor
+.env: /etc/passwd /etc/group Makefile
+	printf "USER_ID=%s\nGROUP_ID=%s\n" `id --user "${USER}"` `id --group "${USER}"` > .env
+
+vendor: .env docker-compose.yml Dockerfile composer.json
+	docker compose build --pull
+	$(DOCKER_PHP_EXEC) composer update
+	$(DOCKER_PHP_EXEC) composer bump
+	touch --no-create $@
 
 .PHONY: csfix
 csfix: vendor
-	$(CSFIX_PHP_BIN) vendor/bin/php-cs-fixer fix -v
+	$(DOCKER_PHP_EXEC) vendor/bin/php-cs-fixer fix --verbose
 
 .PHONY: static-analysis
 static-analysis: vendor
-	$(PHP_BIN) vendor/bin/phpstan analyse $(PHPSTAN_ARGS)
+	$(DOCKER_PHP_EXEC) php -d zend.assertions=1 vendor/bin/phpstan analyse --memory-limit=256M $(PHPSTAN_ARGS)
 
 .PHONY: test
 test: vendor
-	$(PHP_BIN) vendor/bin/phpunit $(PHPUNIT_ARGS)
+	$(DOCKER_PHP_EXEC) php -d zend.assertions=1 vendor/bin/phpunit $(PHPUNIT_ARGS)
 
 .PHONY: postgres-start
 postgres-start:
-	docker run --publish 5432:5432 --rm --name postgres-php-testing --env POSTGRES_PASSWORD=root_password --detach postgres:latest
+	docker compose run  --rm --detach database
 
 .PHONY: postgres-stop
 postgres-stop:
 	docker stop postgres-php-testing
+
+.PHONY: clean
+clean:
+	git clean -dfX
