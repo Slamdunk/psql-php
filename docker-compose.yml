@@ -1,0 +1,19 @@
+services:
+  php:
+    build:
+      context: .
+      args:
+        USER_ID: ${USER_ID}
+        GROUP_ID: ${GROUP_ID}
+    volumes:
+      - .:${PWD}
+    working_dir: ${PWD}
+    links:
+      - postgres:database
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: root_password

@@ -17,11 +17,11 @@
         "ext-pgsql": "*"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.59.3",
-        "phpstan/phpstan": "^1.11.8",
+        "friendsofphp/php-cs-fixer": "^3.61.1",
+        "phpstan/phpstan": "^1.11.9",
         "phpstan/phpstan-phpunit": "^1.4.0",
         "phpstan/phpstan-strict-rules": "^1.6.0",
-        "phpunit/phpunit": "^11.2.8"
+        "phpunit/phpunit": "^11.3.0"
     },
     "autoload": {
         "psr-4": {

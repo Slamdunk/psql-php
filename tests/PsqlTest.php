@@ -14,12 +14,15 @@ use SlamPsql\Psql;
 #[CoversClass(Psql::class)]
 final class PsqlTest extends TestCase
 {
+    private string $databaseHostname;
     private Psql $psql;
 
     protected function setUp(): void
     {
+        $this->databaseHostname = false !== getenv('CI') ? '127.0.0.1' : 'database';
+
         $this->psql = new Psql(
-            '127.0.0.1',
+            $this->databaseHostname,
             5432,
             'postgres',
             'root_password',
@@ -32,7 +35,7 @@ final class PsqlTest extends TestCase
     {
         $user = uniqid('root_');
         $psql = new Psql(
-            '127.0.0.1',
+            $this->databaseHostname,
             5432,
             $user,
             uniqid(),
@@ -51,7 +54,7 @@ final class PsqlTest extends TestCase
     {
         $databaseName = uniqid('db_');
 
-        [$inputFile, $outputFile, $errorFile] = $this->createStreams(sprintf('CREATE DATABASE %s', $databaseName));
+        [$inputFile, $outputFile, $errorFile] = $this->createStreams(\sprintf('CREATE DATABASE %s', $databaseName));
         self::assertTrue($this->psql->run($inputFile, $outputFile, $errorFile));
 
         rewind($outputFile);
@@ -85,7 +88,7 @@ final class PsqlTest extends TestCase
 
     public function testReportSpecificQueryOnError(): void
     {
-        $wrongQuery = sprintf('SLEECT foooo_%s', uniqid());
+        $wrongQuery = \sprintf('SLEECT foooo_%s', uniqid());
         [$inputFile, $outputFile, $errorFile] = $this->createStreams(implode(PHP_EOL, [
             'SELECT 1;',
             $wrongQuery.';',
@@ -100,7 +103,7 @@ final class PsqlTest extends TestCase
 
     public function testReportSpecificQueryOnErrorInEndingFile(): void
     {
-        $wrongQuery = sprintf('SLEECT foooo_%s', uniqid());
+        $wrongQuery = \sprintf('SLEECT foooo_%s', uniqid());
         [$inputFile, $outputFile, $errorFile] = $this->createStreams(implode(PHP_EOL, [
             'SELECT 1;',
             $wrongQuery,
