@@ -25,12 +25,12 @@ test: vendor
 	$(DOCKER_PHP_EXEC) php -d zend.assertions=1 vendor/bin/phpunit $(PHPUNIT_ARGS)
 
 .PHONY: postgres-start
-postgres-start:
+postgres-start: .env docker-compose.yml Dockerfile
 	docker compose run  --rm --detach database
 
 .PHONY: postgres-stop
 postgres-stop:
-	docker stop postgres-php-testing
+	docker compose stop database
 
 .PHONY: clean
 clean:
