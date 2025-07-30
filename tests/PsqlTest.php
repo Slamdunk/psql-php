@@ -47,7 +47,7 @@ final class PsqlTest extends TestCase
         self::assertFalse($psql->run($inputFile, $outputFile, $errorFile));
 
         rewind($errorFile);
-        self::assertStringContainsString($user, (string) stream_get_contents($errorFile));
+        self::assertStringContainsString($user, stream_get_contents($errorFile));
     }
 
     public function testReadDataFromInputAndReturnOutput(): void
@@ -64,7 +64,7 @@ final class PsqlTest extends TestCase
         self::assertTrue($this->psql->run($inputFile, $outputFile, $errorFile));
 
         rewind($outputFile);
-        self::assertStringContainsString($databaseName, (string) stream_get_contents($outputFile));
+        self::assertStringContainsString($databaseName, stream_get_contents($outputFile));
     }
 
     public function testHandleMultipleQueries(): void
@@ -96,7 +96,7 @@ final class PsqlTest extends TestCase
         self::assertFalse($this->psql->run($inputFile, $outputFile, $errorFile));
 
         rewind($errorFile);
-        $output = (string) stream_get_contents($errorFile);
+        $output = stream_get_contents($errorFile);
         self::assertStringContainsString($wrongQuery, $output);
         self::assertStringNotContainsString('SELECT 1', $output);
     }
@@ -111,7 +111,7 @@ final class PsqlTest extends TestCase
         self::assertFalse($this->psql->run($inputFile, $outputFile, $errorFile));
 
         rewind($errorFile);
-        $output = (string) stream_get_contents($errorFile);
+        $output = stream_get_contents($errorFile);
         self::assertStringContainsString($wrongQuery, $output);
         self::assertStringNotContainsString('SHOW VARIABLES', $output);
     }
