@@ -6,15 +6,15 @@ namespace SlamPsql;
 
 use PgSql\Connection;
 
-final class Psql implements PsqlInterface
+final readonly class Psql implements PsqlInterface
 {
     public function __construct(
-        private readonly string $host,
-        private readonly int $port,
-        private readonly string $username,
-        private readonly string $password,
-        private readonly ?string $database,
-        private readonly ?int $connectTimeout,
+        private string $host,
+        private int $port,
+        private string $username,
+        private string $password,
+        private ?string $database,
+        private ?int $connectTimeout,
     ) {}
 
     /**
@@ -75,7 +75,11 @@ final class Psql implements PsqlInterface
 
         $query = '';
         while (false !== ($line = fgets($inputStream))) {
-            if (str_starts_with($line, '--')) {
+            if (
+                str_starts_with($line, '--')
+                || str_starts_with($line, '\restrict ')
+                || str_starts_with($line, '\unrestrict ')
+            ) {
                 continue;
             }
 

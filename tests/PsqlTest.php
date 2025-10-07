@@ -86,6 +86,16 @@ final class PsqlTest extends TestCase
         self::assertTrue($this->psql->run($inputFile, $outputFile, $errorFile));
     }
 
+    public function testSkipRestrictLines(): void
+    {
+        [$inputFile, $outputFile, $errorFile] = $this->createStreams(implode(PHP_EOL, [
+            '\restrict 5UEGLb9HU6QA63x35MgWqzbmletmlvUzXxHZpV9OjQoTPDK2KmSZIGhFUkGJG5U',
+            'SELECT 1;',
+            '\unrestrict 5UEGLb9HU6QA63x35MgWqzbmletmlvUzXxHZpV9OjQoTPDK2KmSZIGhFUkGJG5U',
+        ]));
+        self::assertTrue($this->psql->run($inputFile, $outputFile, $errorFile));
+    }
+
     public function testReportSpecificQueryOnError(): void
     {
         $wrongQuery = \sprintf('SLEECT foooo_%s', uniqid());
