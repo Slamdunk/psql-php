@@ -1,0 +1,13 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method SlamPsql\\Psql\:\:getopt\(\) should return array\<non\-empty\-string, string\> but returns \(array\<string, list\<mixed\>\|string\|false\>\|false\)\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Psql.php
+
+		-
+			message: '#^Parameter \#2 \$env of static method SlamPsql\\Psql\:\:fromGetopt\(\) expects array\{PGPASSWORD\: string\|null\}, array\<non\-empty\-string, string\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/PsqlTest.php

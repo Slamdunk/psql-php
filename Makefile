@@ -1,4 +1,4 @@
-DOCKER_PHP_EXEC := docker compose run --rm php
+DOCKER_PHP_EXEC := docker compose run --rm --remove-orphans php
 
 all: csfix static-analysis test
 	@echo "Done."
@@ -26,7 +26,7 @@ test: vendor
 
 .PHONY: postgres-start
 postgres-start: .env docker-compose.yml Dockerfile
-	docker compose run  --rm --detach database
+	docker compose run  --rm --remove-orphans --detach database
 
 .PHONY: postgres-stop
 postgres-stop:
