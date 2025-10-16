@@ -1,41 +1,23 @@
 #!/usr/bin/env php
 <?php
 
+declare(strict_types=1);
+
+use SlamPsql\Psql;
+
 require __DIR__.'/src/PsqlInterface.php';
 
 require __DIR__.'/src/Psql.php';
 
-$opts = getopt('h', [
-    'host:',
-    'port:',
-    'username:',
-    'password:',
-    'database:',
-    'connect_timeout:',
-]);
-if (array_key_exists('h', $opts)) {
-    fwrite(\STDOUT, implode(\PHP_EOL, [
-        'Usage: psql [OPTIONS]',
-        '  --host              Connect to host',
-        '  --port              Port number',
-        '  --username          User for login',
-        '  --password          Password to use',
-        '  --database          Database to use',
-        '  --connect_timeout   Connect timeout to use',
-        '',
-    ]));
-
-    exit;
+$psql = Psql::fromGetopt(
+    Psql::getopt(),
+    ['PGPASSWORD' => (string) getenv('PGPASSWORD')],
+    \STDOUT,
+);
+if (null === $psql) {
+    exit(1);
 }
 
-$psql = new \SlamPsql\Psql(
-    $opts['host'],
-    (int) $opts['port'],
-    $opts['username'],
-    $opts['password'],
-    $opts['database'] ?? null,
-    $opts['connect_timeout'] ?? null,
-);
 $return = $psql->run(\STDIN, \STDOUT, \STDERR);
 
 exit((int) (true !== $return));

@@ -8,6 +8,27 @@ use PgSql\Connection;
 
 final readonly class Psql implements PsqlInterface
 {
+    private const string HELP = <<<'EOF'
+
+        Usage: psql [OPTIONS]
+          -h, --host              Connect to host
+          -p, --port              Port number
+          -U, --username          User for login
+          -d, --database          Database to use
+              --connect_timeout   Connect timeout to use, in seconds
+
+          Use `PGPASSWORD` env variable to set the connection password.
+
+        EOF;
+
+    /**
+     * @param non-empty-string      $host
+     * @param positive-int          $port
+     * @param non-empty-string      $username
+     * @param non-empty-string      $password
+     * @param null|non-empty-string $database
+     * @param null|positive-int     $connectTimeout
+     */
     public function __construct(
         private string $host,
         private int $port,
@@ -16,6 +37,97 @@ final readonly class Psql implements PsqlInterface
         private ?string $database,
         private ?int $connectTimeout,
     ) {}
+
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return array<non-empty-string, string>
+     */
+    public static function getopt(): array
+    {
+        return getopt('h:p:U:d:', [
+            'help',
+            'host:',
+            'port:',
+            'username:',
+            'dbname:',
+            'connect_timeout:',
+        ]);
+    }
+
+    /**
+     * @param array<non-empty-string, string> $opts
+     * @param array{PGPASSWORD: ?string}      $env
+     * @param resource                        $stdout
+     */
+    public static function fromGetopt(array $opts, array $env, $stdout): ?self
+    {
+        if (\array_key_exists('help', $opts)) {
+            fwrite($stdout, self::HELP);
+
+            return null;
+        }
+
+        $host = $opts['host'] ?? $opts['h'] ?? null;
+        if (null === $host || '' === $host) {
+            fwrite($stdout, 'HOST missing'.PHP_EOL);
+            fwrite($stdout, self::HELP);
+
+            return null;
+        }
+
+        $port = (int) ($opts['port'] ?? $opts['p'] ?? 0);
+        if (0 >= $port) {
+            fwrite($stdout, 'PORT missing'.PHP_EOL);
+            fwrite($stdout, self::HELP);
+
+            return null;
+        }
+
+        $username = $opts['username'] ?? $opts['U'] ?? null;
+        if (null === $username || '' === $username) {
+            fwrite($stdout, 'USER missing'.PHP_EOL);
+            fwrite($stdout, self::HELP);
+
+            return null;
+        }
+
+        $database = $opts['dbname'] ?? $opts['d'] ?? null;
+        if ('' === $database) {
+            fwrite($stdout, 'DATABASE missing'.PHP_EOL);
+            fwrite($stdout, self::HELP);
+
+            return null;
+        }
+
+        $connectTimeout = $opts['connect_timeout'] ?? null;
+        if (null !== $connectTimeout) {
+            $connectTimeout = (int) $connectTimeout;
+            if (1 > $connectTimeout) {
+                fwrite($stdout, 'CONNECT_TIMEOUT must be greater than zero'.PHP_EOL);
+                fwrite($stdout, self::HELP);
+
+                return null;
+            }
+        }
+
+        $password = $env['PGPASSWORD'] ?? null;
+        if (null === $password || '' === $password) {
+            fwrite($stdout, 'PASSWORD missing'.PHP_EOL);
+            fwrite($stdout, self::HELP);
+
+            return null;
+        }
+
+        return new self(
+            $host,
+            $port,
+            $username,
+            $password,
+            $database,
+            $connectTimeout,
+        );
+    }
 
     /**
      * @param resource $inputStream

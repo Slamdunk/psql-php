@@ -20,6 +20,7 @@
   <coverage>
     <report>
       <text outputFile="php://stdout" showOnlySummary="true"/>
+      <html outputDirectory="./tmp/code-coverage-html" />
     </report>
   </coverage>
   <source>

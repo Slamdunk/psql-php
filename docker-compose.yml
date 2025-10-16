@@ -9,11 +9,11 @@ services:
       - .:${PWD}
     working_dir: ${PWD}
     links:
-      - postgres:database
+      - database
     depends_on:
-      - postgres
+      - database
 
-  postgres:
+  database:
     image: postgres:latest
     environment:
       POSTGRES_PASSWORD: root_password

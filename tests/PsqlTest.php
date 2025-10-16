@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SlamPsql\Tests;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SlamPsql\Psql;
 
@@ -14,6 +15,7 @@ use SlamPsql\Psql;
 #[CoversClass(Psql::class)]
 final class PsqlTest extends TestCase
 {
+    /** @var non-empty-string */
     private string $databaseHostname;
     private Psql $psql;
 
@@ -29,6 +31,66 @@ final class PsqlTest extends TestCase
             'postgres',
             5,
         );
+    }
+
+    /**
+     * @param non-empty-string                $extectedError
+     * @param array<non-empty-string, string> $opts
+     * @param array<non-empty-string, string> $env
+     */
+    #[DataProvider('provideCliHelpCases')]
+    public function testCliHelp(string $extectedError, array $opts, array $env = []): void
+    {
+        $outputFile = tmpfile();
+        self::assertIsResource($outputFile);
+
+        self::assertNull(Psql::fromGetopt($opts, $env, $outputFile));
+
+        rewind($outputFile);
+        $contents = stream_get_contents($outputFile);
+        self::assertNotFalse($contents);
+        self::assertStringContainsString('Usage:', $contents);
+        self::assertStringContainsString($extectedError, $contents);
+    }
+
+    /**
+     * @return list<list<array<non-empty-string, false|string>|non-empty-string>>
+     */
+    public static function provideCliHelpCases(): iterable
+    {
+        return [
+            ['Usage:', ['help' => false]],
+            ['HOST missing', ['host' => '']],
+            ['HOST missing', ['h' => '']],
+            ['PORT missing', ['host' => 'foo', 'port' => '']],
+            ['PORT missing', ['h' => 'foo', 'p' => '']],
+            ['USER missing', ['host' => 'foo', 'port' => '123', 'username' => '']],
+            ['USER missing', ['h' => 'foo', 'p' => '123', 'U' => '']],
+            ['DATABASE missing', ['host' => 'foo', 'port' => '123', 'username' => 'bar', 'dbname' => '']],
+            ['DATABASE missing', ['h' => 'foo', 'p' => '123', 'U' => 'bar', 'd' => '']],
+            ['CONNECT_TIMEOUT', ['host' => 'foo', 'port' => '123', 'username' => 'bar', 'connect_timeout' => '-1']],
+            ['PASSWORD missing', ['host' => 'foo', 'port' => '123', 'username' => 'bar', 'password' => 'l33t']],
+            ['PASSWORD missing', ['host' => 'foo', 'port' => '123', 'username' => 'bar'], ['password' => 'l33t']],
+            ['PASSWORD missing', ['host' => 'foo', 'port' => '123', 'username' => 'bar'], ['PGPASSWORD' => '']],
+        ];
+    }
+
+    public function testCliFactory(): void
+    {
+        $outputFileForFactory = tmpfile();
+        self::assertIsResource($outputFileForFactory);
+
+        $psql = Psql::fromGetopt([
+            'host' => $this->databaseHostname,
+            'port' => '5432',
+            'username' => 'postgres',
+            'dbname' => 'postgres',
+            'connect_timeout' => '5',
+        ], [
+            'PGPASSWORD' => 'root_password',
+        ], $outputFileForFactory);
+
+        self::assertNotNull($psql);
     }
 
     public function testErroneousConnectionParameters(): void

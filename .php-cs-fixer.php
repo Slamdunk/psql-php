@@ -20,6 +20,7 @@ $config = (new PhpCsFixer\Config())
 $config->getFinder()
     ->in(__DIR__.'/src')
     ->in(__DIR__.'/tests')
+    ->append([__DIR__.'/psql'])
 ;
 
 return $config;
