@@ -14,7 +14,7 @@ final readonly class Psql implements PsqlInterface
           -h, --host              Connect to host
           -p, --port              Port number
           -U, --username          User for login
-          -d, --database          Database to use
+          -d, --dbname            Database to use
               --connect_timeout   Connect timeout to use, in seconds
 
           Use `PGPASSWORD` env variable to set the connection password.
