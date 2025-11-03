@@ -43,7 +43,7 @@ Usage: psql [OPTIONS]
   --port              Port number
   --username          User for login
   --password          Password to use
-  --database          Database to use
+  --dbname            Database to use
   --connect_timeout   Connect timeout to use
 
 $ printf "CREATE DATABASE foobar;\nSELECT datname FROM pg_database;" | ./psql
