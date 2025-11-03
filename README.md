@@ -39,12 +39,13 @@ The library provides two usages, the binary and the `\SlamPsql\Psql` class.
 ```
 $ ./psql -h
 Usage: psql [OPTIONS]
-  --host              Connect to host
-  --port              Port number
-  --username          User for login
-  --password          Password to use
-  --dbname            Database to use
-  --connect_timeout   Connect timeout to use
+  -h, --host              Connect to host
+  -p, --port              Port number
+  -U, --username          User for login
+  -d, --dbname            Database to use
+	  --connect_timeout   Connect timeout to use, in seconds
+
+  Use `PGPASSWORD` env variable to set the connection password.
 
 $ printf "CREATE DATABASE foobar;\nSELECT datname FROM pg_database;" | ./psql
 foobar
