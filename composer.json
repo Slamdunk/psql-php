@@ -19,9 +19,9 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.91.3",
         "phpstan/phpstan": "^2.1.33",
-        "phpstan/phpstan-phpunit": "^2.0.9",
+        "phpstan/phpstan-phpunit": "^2.0.10",
         "phpstan/phpstan-strict-rules": "^2.0.7",
-        "phpunit/phpunit": "^12.5.0"
+        "phpunit/phpunit": "^12.5.1"
     },
     "autoload": {
         "psr-4": {
