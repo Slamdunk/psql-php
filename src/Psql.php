@@ -196,7 +196,7 @@ final readonly class Psql implements PsqlInterface
             }
 
             $query .= $line;
-            if (1 !== preg_match('/;\s*$/', $query)) {
+            if (0 === preg_match('/;\s*$/', $query) || 0 !== substr_count($query, '\'') % 2) {
                 continue;
             }
             $query = trim($query);

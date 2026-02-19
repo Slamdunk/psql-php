@@ -138,6 +138,16 @@ final class PsqlTest extends TestCase
         self::assertTrue($this->psql->run($inputFile, $outputFile, $errorFile));
     }
 
+    public function testHandleSemicolonWithinText(): void
+    {
+        [$inputFile, $outputFile, $errorFile] = $this->createStreams(
+            'SELECT \'Hel\'\'lo
+            ;
+            \';',
+        );
+        self::assertTrue($this->psql->run($inputFile, $outputFile, $errorFile));
+    }
+
     public function testSkipCommentLines(): void
     {
         [$inputFile, $outputFile, $errorFile] = $this->createStreams(implode(PHP_EOL, [
