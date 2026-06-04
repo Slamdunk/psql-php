@@ -21,7 +21,7 @@
         "phpstan/phpstan": "^2.2.1",
         "phpstan/phpstan-phpunit": "^2.0.16",
         "phpstan/phpstan-strict-rules": "^2.0.11",
-        "phpunit/phpunit": "^13.1.13"
+        "phpunit/phpunit": "^13.1.14"
     },
     "autoload": {
         "psr-4": {
