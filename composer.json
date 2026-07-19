@@ -20,7 +20,7 @@
         "friendsofphp/php-cs-fixer": "^3.95.15",
         "phpstan/phpstan": "^2.2.5",
         "phpstan/phpstan-phpunit": "^2.0.18",
-        "phpstan/phpstan-strict-rules": "^2.0.11",
+        "phpstan/phpstan-strict-rules": "^2.0.12",
         "phpunit/phpunit": "^13.2.4"
     },
     "autoload": {
